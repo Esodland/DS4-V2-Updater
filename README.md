@@ -1345,6 +1345,7 @@ piloter tous les cycles depuis le PC sans manipulation physique).
 | 75 | Remap du second PSM et effacement du bit 6 | Le remap vers `0x0013` et `0x2144 -> 0x2104` sont exécutés une fois puis l'échec reste identique | Ni le PSM répété ni le bit 6 ne sont le correctif |
 | 76 | Completion native `SceBt+0x64F8` | Les deux canaux passent `0x2 -> 0x6`, reçoivent success et le canal Control se configure ; pas de HID, puis `0x0144 -> 0x01C4` | Le point d'entrée final est prouvé ; blocage restant après la configuration |
 | 77 | `ds4v2reco` mode 3 (inquiry puis StartConnect) | Aucune trame V2 et LED jamais allumée ; aucun événement à traiter | Essai non déclenché, donc sans conclusion sur le mode 3 |
+| 78 | Reset V2, contrôle USB puis mode appairage Windows | `VID_054C&PID_09CC`, HID/audio/micro `OK` ; `Wireless Controller` apparaît avec `SHARE + PS` | La V2 n'est ni briquée ni muette radio après le reset ; les deux captures HCI vides ne sont pas un test négatif valide |
 
 ### Incidents
 

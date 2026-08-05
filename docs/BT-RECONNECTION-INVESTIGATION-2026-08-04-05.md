@@ -151,6 +151,21 @@ perte par l'outillage Microsoft documente dans HCI-WINDOWS-COMPARISON.md.
   faite par les essais de cette campagne.
 - Les modifications de RAM etaient bornees a une tentative et perdues au reboot.
 
+## Verification materielle apres reset (2026-08-05)
+
+Apres une periode sans LED ni tentative radio visible, un reset physique de la
+V2 suivi d'un rebranchement USB au PC a donne une enumeration complete et saine :
+Sony `VID_054C&PID_09CC`, peripherique USB composite, controleur de jeu HID,
+audio et microphone, tous au statut Windows `OK`. Une fois debranchee,
+`SHARE + PS` a aussi fait apparaitre `Wireless Controller` dans la recherche
+Bluetooth Windows. La V2 n'est donc ni briquee ni muette radio apres le reset.
+
+Deux captures WPR nommees `v2-pair-20260805-135736` et `...-135924` restent
+vides cote HCI (texte 0 octet, PCAPNG 48 octets). Elles ne contredisent pas la
+decouverte Windows : cette methode n'a pas enregistre aucune transaction HCI
+utilisable dans ces fenetres et ne doit pas etre employee comme test negatif de
+la radio sans verifier d'abord l'activite de recherche de l'hote.
+
 ## Prochaine etape rationnelle
 
 Ne pas repeter les essais fermes (remap, clear6, StartConnect direct) ni lancer
