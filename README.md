@@ -34,28 +34,28 @@ sous la main. Question dérivée : est-ce qu'un outil PC / communautaire est fai
 - **Sony n'a jamais publié d'utilitaire PC de mise à jour firmware pour la DS4.**
 - L'outil officiel *« Firmware Updater for DualSense »* (Windows/macOS) ne concerne
   **que la manette PS5 (DualSense)**, pas la DS4.
-- Le firmware d'une DS4 ne se met à jour qu'**en USB, branchée sur une PS4**
-  (ou PS5 pour certaines opérations), automatiquement, via le système de la console.
+- Le projet ne possède **aucune preuve tangible** d'une procédure de mise à jour
+  firmware pour une DS4, ni par simple branchement USB à une PS4, ni à une PS5.
+  Cette hypothèse ne doit donc pas être recommandée comme solution.
 
-**Solutions immédiates sans PS4 à soi** : PS4 d'un proche, magasin/réparateur,
-médiathèque équipée. Le flash prend ~2 min, aucune manipulation.
-
-> À noter : les mises à jour firmware DS4 sont **rarissimes** et ne corrigent
-> quasiment rien de visible côté utilisateur. Avant de vouloir « mettre à jour »,
-> vérifier que le vrai problème n'est pas la **calibration** (voir §6).
+Le mode DFU et des commandes USB techniques sont documentés, mais ils ne prouvent
+ni l'existence d'un flux officiel de mise à jour, ni l'existence d'une image
+signée applicable, ni une mise à jour DS4 réussie. Toute affirmation contraire
+devra s'appuyer sur une capture ou une source primaire vérifiable.
 
 ---
 
 ## 3. Pourquoi un « updater PC » est difficile
 
-Chaîne de mise à jour connue (via reverse engineering) :
+Ce que le reverse engineering établit seulement côté USB :
 
 1. Entrée en mode DFU : `SET 0xa2 [0x01]`, puis reset `SET 0xa0 0x04`.
 2. La manette se ré-énumère : `054c:05c4` (normal) → **`054c:0856` (DFU)**.
-3. Upload firmware par **chunks** : `SET 0xf0 0x00` ... puis finalisation `SET 0xf0 0x01`.
+3. Des commandes `SET 0xf0` existent, dont `0xf0 0x00` et `0xf0 0x01` ; leur
+   emploi dans une mise à jour DS4 officielle n'est pas démontré ici.
 
 Le protocole HID (GET report type `0x01`, SET report type `0x09`) est **documenté**.
-**Ce n'est PAS le blocage.**
+Ce constat ne constitue pas une chaîne de mise à jour complète.
 
 Le blocage réel :
 
@@ -97,9 +97,10 @@ Il a lui-même briqué une DS4 dans un mode série non documenté (part 6).
 
 ## 4. La piste PS4 jailbreakée
 
-Une PS4 jailbreakée est l'**instrument idéal** pour la phase de capture :
+Si une procédure réelle de mise à jour DS4 était un jour démontrée, une PS4
+jailbreakée pourrait devenir un instrument de capture utile :
 
-1. **Hook USB logiciel** pendant une vraie mise à jour → capture la séquence de
+1. **Hook USB logiciel** pendant une mise à jour réellement déclenchée → capture la séquence de
    chunks + le payload, **et** le côté console (ce qui déclenche l'update, présence
    éventuelle d'un nonce). **Méthode préférée** : zéro risque de timing, la plus riche.
 2. Localiser le payload firmware stocké dans le système de la console.
@@ -1153,7 +1154,7 @@ dispatch. Remonter à ce qui la déclenche demande de cartographier cette table.
 | Un plugin peut mener le dialogue à la place du natif | Il le peut, mais le lien ne vit que **~20 ms** après le `0x05` : les requêtes sont acceptées et n'aboutissent jamais (§15.8). |
 | `SceBt+0x199C8` est sur le chemin de la V2 | **Jamais appelée** en trois essais, alors qu'elle l'est pour la V1 à +335 ms (§15.11). |
 | La variation du clignotement de la LED signifie quelque chose | Trois essais aux comportements de LED différents produisent un journal **identique à la milliseconde**. C'est côté manette. |
-| Une mise à jour firmware de la manette réglerait le `0x06` | **Il n'existe aucune procédure de mise à jour pour une DS4.** Aucun menu sur PS4, aucun updater chez Sony — qui n'en publie que pour la DualSense. Seul le mode DFU reste, sans firmware correctif connu. Voir « Prochaines étapes ». |
+| Une mise à jour firmware de la manette réglerait le `0x06` | Aucune procédure de mise à jour DS4 n'est établie dans ce projet. En particulier, le simple branchement USB à une PS4/PS5 n'est pas une méthode prouvée. Le mode DFU seul ne démontre pas qu'une image firmware puisse être appliquée. |
 | Le problème est dans le HID, le pilote, l'appairage ou le registre | L'appairage et le registre restent écartés ; la capture brute prouve que L2CAP est atteint. Le prochain point est le gestionnaire HID/L2CAP interne (mise à jour de §15.14). |
 
 ### Prochaines étapes
@@ -1239,7 +1240,7 @@ d'une session d'instrumentation, pas d'une revue.
 | Forcer la console à initier la connexion | `NOT_CONNECTABLE` pour **les deux** manettes : une DS4 hors appairage n'est jamais connectable (§15.16) |
 | Purger la fiche parasite par `ksceBtDeleteRegisteredInfo` | Retour `0`, mais fiche `0x7600` persistante et inchangée après redémarrage (test 71) |
 | Hooks sur les sites posant le bit 6 | Quatre plantages ; seules les fonctions d'arité prouvée se hookent (§15.13) |
-| Mise à jour du firmware de la manette | **Aucune procédure n'existe pour une DS4.** Vérifié deux fois : rien dans les menus d'une vraie PS4, et Sony ne publie d'updater que pour la DualSense. Les pages web décrivant un chemin « Manettes → Mettre à jour » le confondent avec la mise à jour de la console. Le mode DFU existe (`054C:0856`) mais aucun firmware correctif n'est connu, et la [partie 6 d'Al's blog](https://blog.the.al/2023/07/13/ds4-reverse-engineering-part-6.html) raconte une manette briquée. |
+| Mise à jour du firmware de la manette | **Aucune procédure de mise à jour DS4 n'est prouvée dans ce projet.** Aucun updater PC DS4 n'est documenté et le simple branchement USB à une PS4/PS5 n'est pas une méthode démontrée. Le mode DFU existe (`054C:0856`), mais il ne constitue pas une preuve qu'une image firmware soit disponible ou applicable ; la [partie 6 d'Al's blog](https://blog.the.al/2023/07/13/ds4-reverse-engineering-part-6.html) documente en outre un risque de brique. |
 | La variation du clignotement de la LED | Trois essais aux comportements visuels différents produisent un journal identique à la milliseconde |
 
 #### Observation en suspens
