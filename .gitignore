@@ -1,0 +1,31 @@
+# Local assistant settings and editor state
+.claude/
+.vscode/
+
+# CMake/VitaSDK build artifacts
+**/build/
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/install_manifest.txt
+*.skprx
+**/*.skprx.original
+*.velf
+
+# Console captures and locally extracted reverse-engineering material.
+# The conclusions needed to reproduce the work are maintained in README.md.
+logs/
+refs/
+captures/
+
+# Microsoft Bluetooth Test Platform is downloaded locally only to decode ETL
+# captures.  Keep the reproducible download URL and checksum in the HCI note,
+# but do not version the 43 MB installer nor extracted vendor binaries.
+tools/vendor/BluetoothTestPlatformPack-*.msi
+tools/vendor/btp-*/
+tools/vendor/BTETLParse.exe
+
+# Operating-system noise
+Thumbs.db
+Desktop.ini
+.DS_Store
