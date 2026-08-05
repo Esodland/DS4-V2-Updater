@@ -180,3 +180,17 @@ ou exploiter les resultats obtenus ici. Un reset physique de la manette est une
 decision de l'utilisateur : les journaux actuels ne donnent pas de preuve qu'il
 faille le faire, seulement l'absence de toute tentative radio dans le dernier
 essai.
+
+### Etapes de reprise, dans cet ordre
+
+1. Ne rien deployer tant que le trampoline de `SceBt+0xC3F6` n'est pas revu
+   localement : il doit executer le chargement `ldrd r7,r1,[r0]`, conserver la
+   pile et journaliser ensuite les vrais flags.
+2. Compiler, puis faire **un seul** essai V2 avec cette sonde passive. Comparer
+   les bits `0x200`, `0x2`, `0x4` a une trace V1 reussie.
+3. Remonter depuis la garde qui exclut la V2 vers son auteur; ne pas forcer le
+   balayage `0x64F8` tant que cette cause n'est pas comprise.
+4. Ne pas refaire `remap`, `clear6`, les reponses forgees, `complete=1` ou les
+   modes StartConnect : ils sont documentes comme negatifs ou incomplets.
+5. Garder les captures et les journaux bruts locaux; ne versionner que les
+   conclusions sans link keys ni donnees d'appairage.

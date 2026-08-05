@@ -1346,6 +1346,8 @@ piloter tous les cycles depuis le PC sans manipulation physique).
 | 76 | Completion native `SceBt+0x64F8` | Les deux canaux passent `0x2 -> 0x6`, reçoivent success et le canal Control se configure ; pas de HID, puis `0x0144 -> 0x01C4` | Le point d'entrée final est prouvé ; blocage restant après la configuration |
 | 77 | `ds4v2reco` mode 3 (inquiry puis StartConnect) | Aucune trame V2 et LED jamais allumée ; aucun événement à traiter | Essai non déclenché, donc sans conclusion sur le mode 3 |
 | 78 | Reset V2, contrôle USB puis mode appairage Windows | `VID_054C&PID_09CC`, HID/audio/micro `OK` ; `Wireless Controller` apparaît avec `SHARE + PS` | La V2 n'est ni briquée ni muette radio après le reset ; les deux captures HCI vides ne sont pas un test négatif valide |
+| 79 | Réappairage neuf PS TV, reconnexion passive | Une seule demande `PSM 0x0011`, réponse pending, puis `0x2144 -> 0x21C4` après ~5,25 s | L’échec L2CAP survit à un reset matériel et à un appairage neuf |
+| 80 | Sonde du caller `SceBt+0xC3F0` | Hook sain, mais `r1` n’est pas encore les flags à l’entrée | Les vrais flags sont chargés à `+0xC3F6`; futur hook = trampoline assembleur, pas hook C |
 
 ### Incidents
 
